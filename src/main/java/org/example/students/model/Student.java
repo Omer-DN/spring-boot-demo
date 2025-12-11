@@ -1,7 +1,10 @@
 package org.example.students.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.students.util.Dates;
 import org.hibernate.validator.constraints.Length;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -33,7 +36,17 @@ public class Student implements Serializable {
     @Min(100)
     @Max(800)
     private Integer satScore;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("createdAt")
+    public LocalDateTime calcCreatedAt() {
+        return Dates.atLocalTime(createdAt);
+    }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonProperty("birthDate")
+    public LocalDateTime calcBirthDate() {
+        return Dates.atLocalTime(birthDate);
+    }
     public Long getId() {
         return id;
     }
